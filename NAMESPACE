@@ -1,0 +1,6 @@
+
+importMethodsFrom(AnnotationDbi,as.list)
+
+export(pca,print.pca,plot.pca,pcaInfoPlot,getRankedProbeIds,getRankedProbeIds.pca,
+	GOtree,print.GOtree,plot.GOtree,GOtreeWithLeaveOut,GOtreeHits,
+	primo,primoWithLeaveOut,primoHits,primoData)

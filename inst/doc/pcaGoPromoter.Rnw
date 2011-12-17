@@ -1,0 +1,126 @@
+\documentclass[a4paper]{article}
+\usepackage[OT1]{fontenc}
+\usepackage{Sweave}
+\usepackage[utf8]{inputenc}
+\usepackage{color,hyperref}
+
+%\VignetteIndexEntry{pcaGoPromoter}
+
+\begin{document}
+
+\title{pcaGoPromoter version 
+\Sexpr{packageDescription("pcaGoPromoter")[["Version"]]}}
+\author{Morten Hansen}
+
+\maketitle
+
+\section{Introduction}
+This R package provides functions to ease the analysis of Affymetrix DNA micro
+arrays by principal component analysis with annotation by GO terms and
+possible transcription factors.
+
+<<setup,echo=FALSE>>=
+options(width=80,digits=6)
+@
+
+\section{Requirements}
+
+R version 2.10.0 or higher\newline
+<<bioC,eval=FALSE>>=
+source("http://bioconductor.org/biocLite.R")
+biocLite("pcaGoPromoter")
+@
+Rgraphviz from Bioconductor is needed to draw Gene Ontology tree:
+<<rgraphviz,eval=FALSE>>=
+biocLite("Rgraphviz")
+@
+Note: Graphviz needs to be installed on the computer for Rgraphviz to work.
+See Rgraphviz README for installation.
+\newline
+
+\section{Example}
+
+\subsection{Load the library}
+<<libPcaGoPromoter>>=
+library("pcaGoPromoter")
+@
+\subsection{Read in data set serumStimulation}
+<<libSerumStimulation>>=
+library("serumStimulation")
+data(serumStimulation)
+@
+The serumStimulation data set has been created from 13 CEL files - 5 controls,
+5 serum stimulated with inhibitor and 3 serum stimulated without inhibitor.
+They are read with ReadAffy(), normalized with rma() and the expression data
+extracted with exprs(). All of these function are part of the affy package.
+\newline
+
+The arrays are most likely grouped in some sort of way. Create a factor vector
+to indicate the groups:
+<<groups>>=
+groups <- as.factor( c( rep("control",5) , rep("serumInhib",5) ,
+                        rep("serumOnly",3) ) )
+groups
+@
+
+\subsection{Make PCA informative plot}
+This function "does-it-all". It will make a PCA plot and annotate the axis will
+GO terms and possible commmon transcription factors. 
+\begin{center}
+<<pcaInfoPlot,label=fig1,fig=TRUE,eps=FALSE>>=
+pcaInfoPlot(exprsData=serumStimulation,groups=groups)
+@
+\end{center}
+\subsection{Principal component analysis (PCA)}
+<<pca>>=
+pcaOutput <- pca(serumStimulation)
+@
+\begin{center}
+<<pcaPlot,label=fig2,fig=TRUE,eps=FALSE>>=
+plot(pcaOutput, groups=groups)
+@
+\end{center}
+Proportion of variance is noted along the axis. In this case there are 3 groups
+in the data set - control, serumInhib and serumOnly. There is a clear
+separation of the groups along the 1. principal component (X-axis). 
+The 2. principal component shown a difference between the controls and
+the serum stimulated.
+\subsection{Get loadings from PCA}
+We would like to have the first 1365 probe ids (2,5 \%)  from 2. principal
+component in the negative (serum stimulated) direction.
+<<probeIds>>=
+loadsNegPC2 <- getRankedProbeIds( pcaOutput, pc=2, decreasing=FALSE )[1:1365]
+@
+\subsection{Create Gene Ontology tree from loadings}
+Note: In this step you will be asked to install the necessary data packages.
+<<GOtree>>=
+GOtreeOutput <- GOtree( input = loadsNegPC2)
+@
+\begin{center}
+<<GOtreePlot,label=fig3,fig=TRUE,eps=FALSE>>=
+plot(GOtreeOutput,legendPosition = "bottomright")
+@
+\end{center}
+Output to PDF file is advised. This can be done by coping output to a PDF file:
+<<copyToPdf,eval=FALSE>>=
+dev.copy2pdf(file="GOtree.pdf")
+@
+Function 'GOtree()' also outputs a list of GO terms order by p-value.
+<<printGOtree>>=
+head(GOtreeOutput$sigGOs,n=10)
+@
+\subsection{Get list of possible transcription factors}
+To get possible transcription factors, use function primo() function.
+<<printPrimo>>=
+TFtable <- primo( loadsNegPC2 )
+head(TFtable$overRepresented)
+@
+The output shows you which possible transcription factors (genes) the supplied
+probes have in common.\newline
+\subsection{Get a list of probe ids for a specific transcription factor}
+<<printPrimeHits>>=
+probeIds <- primoHits( loadsNegPC2 , id = 9343 )	
+head(probeIds)
+@
+
+\end{document}
