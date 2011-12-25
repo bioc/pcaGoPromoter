@@ -1,15 +1,21 @@
 Package: pcaGoPromoter
-Version: 0.99.6
-Date: 2011-12-12
+Version: 0.99.7
+Date: 2011-12-25
 Title: pcaGoPromoter is used to analyze DNA micro array data
-Author: Morten Hansen, <mhansen@sund.ku.dk>
-Maintainer: Morten Hansen, <mhansen@sund.ku.dk>
-Description: This package contains functions to ease the analyses of DNA micro arrays. It utilises principle component analysis as the initial multivariate analysis, annotation with GO terms using two different statistical methods and finding possible transcription factors with the primo algorithm.
+Author: Morten Hansen, Jorgen Olsen
+Maintainer: Morten Hansen <mhansen@sund.ku.dk>
+Description: This package contains functions to ease the analyses of DNA micro
+  arrays. It utilizes principal component analysis as the initial multivariate
+  analysis, followed by functional interpretation of the principal component
+  dimensions with overrepresentation analysis for GO terms and regulatory
+  interpretations using overrepresentation analysis of predicted transcription
+  factor binding sites with the primo algorithm.
 biocViews: GeneExpression, Microarray, GO , Visualization
-Imports: Biobase (>= 2.6.0) , AnnotationDbi
-Depends: R (>= 2.10.0) , ellipse
-Suggests: Rgraphviz, GO.db, hgu133plus2.db, mouse4302.db, rat2302.db, hugene10sttranscriptcluster.db, mogene10sttranscriptcluster.db,
-               multicore, Biostrings , pcaGoPromoter.Hs.hg19 , pcaGoPromoter.Mm.mm9 , pcaGoPromoter.Rn.rn4 , serumStimulation
+Imports: Biobase (>= 2.10.0) , AnnotationDbi
+Depends: R (>= 2.14.0) , ellipse
+Suggests: Rgraphviz, GO.db, hgu133plus2.db, mouse4302.db, rat2302.db,
+  hugene10sttranscriptcluster.db, mogene10sttranscriptcluster.db, Biostrings,
+  pcaGoPromoter.Hs.hg19, pcaGoPromoter.Mm.mm9, pcaGoPromoter.Rn.rn4,
+  serumStimulation, parallel
 LazyLoad: yes
 License: GPL (>= 2)
-Packaged: 2011-12-12 21:52:59 UTC; morten

@@ -260,7 +260,7 @@ pcaLeaveOut <- function( exprsData , leaveOut=0.1 , runs = NCOL(exprsData) ) {
     }
     
     func <- function(i) { pca(exprsData[, index[[i]]], printDropped=FALSE) }	
-    if(require("multicore")) {
+    if(require("parallel")) {
         res <- mclapply(1:runs, func, mc.set.seed=TRUE)
     } else {
         res <- lapply(1:runs, func)
@@ -306,7 +306,7 @@ multiPca <- function(exprsData, pc, noProbes, decreasing, leaveOut, runs,
 #    }
 #    
 #    ## multicore giver problemer med sqllite databaserne...	
-#    if(require("multicore")) {
+#    if(require("parallel")) {
 #        res <- mclapply( 1:runs, func , mc.set.seed = TRUE )
 #    } else {
 #        res <- lapply( 1:runs, func )

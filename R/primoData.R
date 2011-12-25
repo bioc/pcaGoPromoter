@@ -209,7 +209,7 @@ primoData.getAllThresholds <- function(promoters, matrices) {
 
     func <- function(i) { primoData.getThresholdNew(promoters, matrices[i]) }
     
-    if(require(multicore)) {
+    if(require("parallel")) {
         res <- mclapply(1:length(matrices), func)
     } else {
         res <- lapply(1:length(matrices), func)
