@@ -1,0 +1,11 @@
+citEntry(entry = "Article",
+         "author" = "Hansen M, Gerds TA, Nielsen OH, Seidelin JB, Troelsen JT, et al.",
+         "title" = "pcaGoPromoter - An R Package for Biological and Regulatory Interpretation of Principal Components in Genome-Wide Gene Expression Data",
+         journal = "PLoS One",
+         volume = "7",
+         number = "2",
+         year = "2012",
+         doi = "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0032394",
+         publisher = "Public Library of Science",
+         textVersion = "Hansen M, Gerds TA, Nielsen OH, Seidelin JB, Troelsen JT, et al. (2012) pcaGoPromoter - An R Package for Biological and Regulatory Interpretation of Principal Components in Genome-Wide Gene Expression Data. PLoS ONE 7(2): e32394. doi:10.1371/journal.pone.0032394"
+) 
