@@ -9,9 +9,17 @@ dropVarNull <- function(x) {
     x <- na.omit(x)
 }
 
-pca <- function(exprsData, printDropped=TRUE, scale=TRUE, center=TRUE) {
-
-    exprsData <- as.matrix(exprsData)
+pca <- function(eData, printDropped=TRUE, scale=TRUE, center=TRUE) {
+    
+    if(class(eData) == "ExpressionSet") {
+        annotationData <- annotation(eData)
+        phenoData <- phenoData(eData)
+        exprsData <- exprs(eData)
+        expressionData <- list(annotationData,phenoData)
+    } else { 
+        exprsData <- as.matrix(eData)
+        expressionData <- NA
+    }
     
     for(i in 1:length(exprsData[, 1])) {
         if(var(exprsData[i, ]) == 0) {
@@ -26,7 +34,8 @@ pca <- function(exprsData, printDropped=TRUE, scale=TRUE, center=TRUE) {
     
     p <- prcomp(t(exprsData), scale=scale, center=center)
     
-    res <- list(scores=p$x, loadings=p$rotation, pov=p$sdev^2/sum(p$sdev^2) )
+    res <- list(scores=p$x, loadings=p$rotation, pov=p$sdev^2/sum(p$sdev^2),
+            expressionData=expressionData)
     class(res) <- "pca"
     res
 }
@@ -48,7 +57,21 @@ getRankedProbeIds.pca <- function( x , pc=1 , decreasing=TRUE ) {
 plot.pca <- function(x, groups, PCs=c(1, 2), printNames=TRUE, symbolColors=TRUE,
         plotCI=TRUE, GOtreeObjs=NA, primoObjs=NA, main, ... ) {
     
-    p <- x
+    if(is.list(x$expressionData)) {
+        pData <- pData(x$expressionData[[2]])
+        if(any(colnames(pData) == "groups")) {
+            groups <- as.factor(pData[,"groups"])
+        }
+        if(any(colnames(pData) == "group")) {
+            groups <- as.factor(pData[,"group"])
+        }
+        if(any(colnames(pData) == "class")) {
+            groups <- as.factor(pData[,"class"])
+        }
+        p <- x
+    } else {
+        p <- x
+    }
     
     if(missing(groups)) {
         groups <- as.factor(rep("All", NROW(p$scores)));

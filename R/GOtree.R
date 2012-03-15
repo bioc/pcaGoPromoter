@@ -349,7 +349,7 @@ GOtree <- function(input, inputType="hgu133plus2", org="Hs",
     a <- convertInput(input=input, inputType=inputType, org=org)
     
     x <- a[["x"]]
-#	org <- a[["org"]]
+    org <- a[["org"]]
     
     GOs <- getGOsDownTree(x, org=org)
     sigGOs <- getSigGOTermsOnce(GOs, noGenesInCut=length(x), org=org,

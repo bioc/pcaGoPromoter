@@ -24,7 +24,7 @@ pcaInfoPlot - Makes a informative score plot with optional overrepresented GO
 terms and predicted transcription factor binding sites annotated along the axis.
 }
 \usage{
-pca(exprsData, printDropped = TRUE, scale=TRUE, center=TRUE)
+pca(eData, printDropped = TRUE, scale=TRUE, center=TRUE)
 
 \method{plot}{pca}(x, groups, PCs = c(1,2), printNames = TRUE,
      symbolColors = TRUE, plotCI = TRUE, GOtreeObjs, primoObjs,
@@ -32,15 +32,16 @@ pca(exprsData, printDropped = TRUE, scale=TRUE, center=TRUE)
 
 \method{getRankedProbeIds}{pca}(x, pc = 1, decreasing = TRUE)
 
-pcaInfoPlot(exprsData, inputType = "hgu133plus2", org = "Hs", groups,
+pcaInfoPlot(eData, inputType = "hgu133plus2", org = "Hs", groups,
             noProbes = 1365, GOtermsAnnotation = TRUE,
             primoAnnotation = TRUE)
 }
 \arguments{
-  \item{exprsData}{
-a table with expression data. Variables in rows and observations in columns.
-Row names should be probe identifiers (Affymetrix probe set ID, Gene Symbol or
-Entrez IDs), column names should be sample identifiers.
+  \item{eData}{
+an ExpressionSet object or a table with expression data with variables in rows
+and observations in columns. Row names should be probe identifiers (Affymetrix
+probe set ID, Gene Symbol or Entrez IDs), column names should be sample
+identifiers.
 }
   \item{printDropped}{
 a logical value determination whether or not dropped probes should be printed.

@@ -30,6 +30,17 @@ convertInput <- function(input, inputType, org="Hs", outputType="entrezId") {
             inputType == "rat2302" |
             inputType == "hugene10st" | inputType == "mogene10st") {
 
+        # Set org
+        if( inputType == "hgu133plus2" | inputType == "hugene10st" ) {
+            org <- "Hs"
+        }        
+        if( inputType == "mouse4302" | inputType == "mogene10st" ) {
+            org <- "Mm"
+        }        
+        if( inputType == "rat2302") {
+            org <- "Rn"
+        }        
+        
         if( inputType == "hugene10st" | inputType == "mogene10st") {
             inputType <- paste(sep="", inputType, "transcriptcluster")
         }		
@@ -48,6 +59,45 @@ convertInput <- function(input, inputType, org="Hs", outputType="entrezId") {
                     use.names=FALSE)
             x <- unique(x[!is.na(x)])
         }
+
+
+    } else if( inputType == "geneSymbol" ) {
+        packageName <- paste(sep="", "org.", org, ".eg.db")
+        require(packageName,character.only=TRUE,quietly=TRUE)
+        ALIAS2EG <- get( paste( sep="" , "org.", org , ".egALIAS2EG" ) )  
+        indexExists <- input %in% keys(ALIAS2EG)
+        if( !all(indexExists) ) {
+            print("The following gene symbol cannot be mapped and are excluded:")
+            print(input[!indexExists])
+            input <- input[indexExists]
+        }
+        if( outputType == "refseq" ) {
+            # TODO SYMBOL2EG eller ALIAS2EG ???
+            SYMBOL2EG <- get( paste( sep="" , "org.", org , ".egALIAS2EG" ) ) 
+            x <- unlist( AnnotationDbi::mget( input , SYMBOL2EG , ifnotfound=NA ) , use.names = FALSE)
+            x <- x[ !is.na(x) ]
+            REFSEQ <- get( paste( sep="" , "org.", org , ".egREFSEQ" ) )  
+            x <- unlist( AnnotationDbi::mget( x , REFSEQ , ifnotfound=NA ) , use.names = FALSE)
+            x <- unique(x[ !is.na(x) ])
+            x <- x[grep("NM_",x)]
+        } else {
+            ALIAS2EG <- get( paste( sep="" , "org.", org , ".egALIAS2EG" ) )  
+            x <- unlist( AnnotationDbi::mget( input , ALIAS2EG , ifnotfound=NA ) , use.names = FALSE)
+            x <- unique(x[ !is.na(x) ])
+        }
+    } else if( inputType == "entrezID" ) {
+        packageName <- paste(sep="", "org.", org, ".eg.db")
+        require(packageName,character.only=TRUE,quietly=TRUE)
+        if( outputType == "refseq" ) {
+            REFSEQ <- get( paste( sep="" , "org.", org , ".egREFSEQ" ) )  
+            x <- unlist( AnnotationDbi::mget( input , REFSEQ , ifnotfound=NA ) , use.names = FALSE)
+            x <- unique(x[ !is.na(x) ])
+            x <- x[grep("NM_",x)]
+        } else {
+            x <- input
+        }
+        
+    
     } else {
         stop(paste(sep="", "Unknown inputType '", inputType, "'"))
     }
@@ -55,11 +105,38 @@ convertInput <- function(input, inputType, org="Hs", outputType="entrezId") {
 }
 
 
-pcaInfoPlot <- function(exprsData, inputType="hgu133plus2", org="Hs", groups, 
+pcaInfoPlot <- function(eData, inputType="hgu133plus2", org="Hs", groups, 
         noProbes=1365, GOtermsAnnotation=TRUE, primoAnnotation=TRUE) {
 
-    pcaObj <- pca(exprsData)
+    pcaObj <- pca(eData)
 
+    if( !is.na(pcaObj$expressionData[1]) ) {
+        chipType <- pcaObj$expressionData[[1]]
+ 
+        # Set inputType and org
+        if( chipType == "hgu133plus2" ) {
+            inputType <- chipType
+            org <- "Hs"
+        }
+        if( chipType == "hugene10st" | chipType == "hugene10stv1" ) {
+            inputType <- "hugene10st"
+            org <- "Hs"
+        }        
+        if( chipType == "mouse4302" ) {
+            inputType <- chipType
+            org <- "Mm"
+        }
+        
+        if( chipType == "mogene10st" | chipType == "mogene10stv1" ) {
+            inputType <- "mogene10st"
+            org <- "Mm"
+        }        
+        if( chipType == "rat2302") {
+            inputType <- chipType
+            org <- "Rn"
+        }
+    }
+    
     probesPC1pos <- getRankedProbeIds(pcaObj, pc=1,
             decreasing=TRUE)[1:noProbes]
     probesPC1neg <- getRankedProbeIds(pcaObj, pc=1,
