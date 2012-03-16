@@ -65,7 +65,7 @@ This function "does-it-all". It will make a PCA plot and annotate the axis will
 GO terms and possible commmon transcription factors. 
 \begin{center}
 <<pcaInfoPlot,label=fig1,fig=TRUE,eps=FALSE>>=
-pcaInfoPlot(exprsData=serumStimulation,groups=groups)
+pcaInfoPlot(serumStimulation,groups=groups)
 @
 \end{center}
 \subsection{Principal component analysis (PCA)}
