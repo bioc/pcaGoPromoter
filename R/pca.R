@@ -91,7 +91,7 @@ plot.pca <- function(x, groups, PCs=c(1, 2), printNames=TRUE, symbolColors=TRUE,
             "#FFAAFF80"),10)
     savePar <- par(no.readonly=TRUE)
     classColors <- plotColors[as.numeric(groups)]
-    layout(c(1, 2), height=c(8, 1))
+    layout(c(1, 2), heights=c(8, 1))
     par(srt=0, xpd=NA, oma=c(0, 0, 0, 0), mar=c(2, 3, 4, 4),
             mgp=c(1.75, 0.5, 0))
 

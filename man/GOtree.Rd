@@ -146,7 +146,7 @@ samples.
 \examples{
 library(serumStimulation)
 data(serumStimulation)
-pcaOutput <- pca( exprsData=serumStimulation )
+pcaOutput <- pca( serumStimulation )
 posLoadings <- getRankedProbeIds( x=pcaOutput )
 GOs <- GOtree( input=posLoadings[1:1000] )
 GOs
