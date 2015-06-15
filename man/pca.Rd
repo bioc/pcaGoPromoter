@@ -33,8 +33,8 @@ pca(eData, printDropped = TRUE, scale=TRUE, center=TRUE)
 \method{getRankedProbeIds}{pca}(x, pc = 1, decreasing = TRUE)
 
 pcaInfoPlot(eData, inputType = "hgu133plus2", org = "Hs", groups,
-            noProbes = 1365, GOtermsAnnotation = TRUE,
-            primoAnnotation = TRUE)
+            printNames = TRUE, plotCI = TRUE, noProbes = 1365,
+            GOtermsAnnotation = TRUE, primoAnnotation = TRUE)
 }
 \arguments{
   \item{eData}{

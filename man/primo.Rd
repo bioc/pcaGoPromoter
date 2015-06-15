@@ -143,7 +143,7 @@ data(serumStimulation)
 pcaOutput <- pca( serumStimulation )
 negLoadings <- getRankedProbeIds( pcaOutput, pc=1, decreasing=FALSE )
 TFs <- primo( negLoadings[1:1000] )
-probeIds <- primoHits( negLoadings , id="M01031" )
+probeIds <- primoHits( negLoadings , id=9326 )
 
 \dontrun{
 TFs <- primoWithLeaveOut( serumStimulation )

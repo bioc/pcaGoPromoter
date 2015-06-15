@@ -62,7 +62,7 @@ getGOsDownTree <- function(x, org="Hs", terms=TRUE) {
     
     if (terms) {
         require("GO.db")
-        GOterms <- as.list(GOTERM)
+        GOterms <- as.list(GO.db::GOTERM)
         GOIDtoGOTERM <- sapply(1:length(GOterms), function(i) {
                     Term(GOterms[[i]]) } )
         names(GOIDtoGOTERM) <- sapply(1:length(GOterms), function(i) {

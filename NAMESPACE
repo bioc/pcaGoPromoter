@@ -1,5 +1,7 @@
 
-importMethodsFrom(AnnotationDbi,as.list)
+#importMethodsFrom(AnnotationDbi,as.list)
+
+import(ellipse,AnnotationDbi,parallel,Biostrings)
 
 export(pca,print.pca,plot.pca,pcaInfoPlot,getRankedProbeIds,getRankedProbeIds.pca,
 	GOtree,print.GOtree,plot.GOtree,GOtreeWithLeaveOut,GOtreeHits,

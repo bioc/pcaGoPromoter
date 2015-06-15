@@ -28,20 +28,24 @@ convertInput <- function(input, inputType, org="Hs", outputType="entrezId") {
     
     if(inputType == "hgu133plus2" | inputType == "mouse4302" |
             inputType == "rat2302" |
-            inputType == "hugene10st" | inputType == "mogene10st") {
+            inputType == "hugene10st" | inputType == "hugene11st" |
+            inputType == "mogene10st" | inputType == "mogene20st") {
 
         # Set org
-        if( inputType == "hgu133plus2" | inputType == "hugene10st" ) {
+        if( inputType == "hgu133plus2" | inputType == "hugene10st" |
+            inputType == "hugene11st" ) {
             org <- "Hs"
         }        
-        if( inputType == "mouse4302" | inputType == "mogene10st" ) {
+        if( inputType == "mouse4302" | inputType == "mogene10st" |
+	    inputType == "mogene20st") {
             org <- "Mm"
         }        
         if( inputType == "rat2302") {
             org <- "Rn"
         }        
         
-        if( inputType == "hugene10st" | inputType == "mogene10st") {
+        if( inputType == "hugene10st" | inputType == "hugene11st" | 
+	    inputType == "mogene10st" | inputType == "mogene20st") {
             inputType <- paste(sep="", inputType, "transcriptcluster")
         }		
         packageName <- paste(sep="", inputType, ".db")
@@ -49,6 +53,7 @@ convertInput <- function(input, inputType, org="Hs", outputType="entrezId") {
 
         if(outputType == "refseq") {
             REFSEQ <- get(paste(sep="", inputType, "REFSEQ"))	
+#            REFSEQ <- mappedkeys(REFSEQ)
             x <- unlist(AnnotationDbi::mget(input, REFSEQ, ifnotfound=NA),
                     use.names=FALSE)
             x <- unique(x[!is.na(x)])
@@ -65,7 +70,7 @@ convertInput <- function(input, inputType, org="Hs", outputType="entrezId") {
         packageName <- paste(sep="", "org.", org, ".eg.db")
         require(packageName,character.only=TRUE,quietly=TRUE)
         ALIAS2EG <- get( paste( sep="" , "org.", org , ".egALIAS2EG" ) )  
-        indexExists <- input %in% keys(ALIAS2EG)
+        indexExists <- input %in% AnnotationDbi::keys(ALIAS2EG)
         if( !all(indexExists) ) {
             print("The following gene symbol cannot be mapped and are excluded:")
             print(input[!indexExists])
@@ -106,8 +111,11 @@ convertInput <- function(input, inputType, org="Hs", outputType="entrezId") {
 
 
 pcaInfoPlot <- function(eData, inputType="hgu133plus2", org="Hs", groups, 
-        noProbes=1365, GOtermsAnnotation=TRUE, primoAnnotation=TRUE) {
+        printNames=TRUE, plotCI=TRUE, noProbes=1365, GOtermsAnnotation=TRUE,
+        primoAnnotation=TRUE ) {
 
+ #   require(affy)
+    
     pcaObj <- pca(eData)
 
     if( !is.na(pcaObj$expressionData[1]) ) {
@@ -126,9 +134,12 @@ pcaInfoPlot <- function(eData, inputType="hgu133plus2", org="Hs", groups,
             inputType <- chipType
             org <- "Mm"
         }
-        
         if( chipType == "mogene10st" | chipType == "mogene10stv1" ) {
             inputType <- "mogene10st"
+            org <- "Mm"
+        }        
+        if( chipType == "mogene20st" ) {
+            inputType <- "mogene20st"
             org <- "Mm"
         }        
         if( chipType == "rat2302") {
@@ -165,5 +176,6 @@ pcaInfoPlot <- function(eData, inputType="hgu133plus2", org="Hs", groups,
     } else {
         primoObjs <- NA
     }
-	plot(pcaObj, groups=groups, GOtreeObjs=GOtreeObjs, primoObjs=primoObjs)
+    plot(pcaObj, groups=groups, printNames=printNames, plotCI=plotCI,
+         GOtreeObjs=GOtreeObjs, primoObjs=primoObjs)
 }

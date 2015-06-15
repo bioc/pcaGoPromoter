@@ -1,5 +1,5 @@
 Package: pcaGoPromoter
-Version: 1.13.0
+Version: 1.13.1
 Date: 2012-03-16
 Title: pcaGoPromoter is used to analyze DNA micro array data
 Author: Morten Hansen, Jorgen Olsen
@@ -11,10 +11,10 @@ Description: This package contains functions to ease the analyses of DNA micro
   interpretations using overrepresentation analysis of predicted transcription
   factor binding sites with the primo algorithm.
 biocViews: GeneExpression, Microarray, GO , Visualization
-Imports: Biobase (>= 2.10.0) , AnnotationDbi
-Depends: R (>= 2.14.0) , ellipse
+Imports: AnnotationDbi
+Depends: R (>= 2.14.0), ellipse, Biostrings
 Suggests: Rgraphviz, GO.db, hgu133plus2.db, mouse4302.db, rat2302.db,
-  hugene10sttranscriptcluster.db, mogene10sttranscriptcluster.db, Biostrings,
+  hugene10sttranscriptcluster.db, mogene10sttranscriptcluster.db,
   pcaGoPromoter.Hs.hg19, pcaGoPromoter.Mm.mm9, pcaGoPromoter.Rn.rn4,
   serumStimulation, parallel
 LazyLoad: yes

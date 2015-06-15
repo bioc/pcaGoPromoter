@@ -38,11 +38,11 @@ See Rgraphviz README for installation.
 \section{Example}
 
 \subsection{Load the library}
-<<libPcaGoPromoter>>=
+<<libPcaGoPromoter,eval=FALSE>>=
 library("pcaGoPromoter")
 @
 \subsection{Read in data set serumStimulation}
-<<libSerumStimulation>>=
+<<libSerumStimulation,eval=FALSE>>=
 library("serumStimulation")
 data(serumStimulation)
 @
@@ -54,7 +54,7 @@ extracted with exprs(). All of these function are part of the affy package.
 
 The arrays are most likely grouped in some sort of way. Create a factor vector
 to indicate the groups:
-<<groups>>=
+<<groups,eval=FALSE>>=
 groups <- as.factor( c( rep("control",5) , rep("serumInhib",5) ,
                         rep("serumOnly",3) ) )
 groups
@@ -64,16 +64,16 @@ groups
 This function "does-it-all". It will make a PCA plot and annotate the axis will
 GO terms and possible commmon transcription factors. 
 \begin{center}
-<<pcaInfoPlot,label=fig1,fig=TRUE,eps=FALSE>>=
-pcaInfoPlot(serumStimulation,groups=groups)
+<<pcaInfoPlot,label=fig1,fig=TRUE,eps=FALSE,eval=FALSE>>=
+pcaInfoPlot(eData=serumStimulation,groups=groups)
 @
 \end{center}
 \subsection{Principal component analysis (PCA)}
-<<pca>>=
+<<pca,eval=FALSE>>=
 pcaOutput <- pca(serumStimulation)
 @
 \begin{center}
-<<pcaPlot,label=fig2,fig=TRUE,eps=FALSE>>=
+<<pcaPlot,label=fig2,fig=TRUE,eps=FALSE,eval=FALSE>>=
 plot(pcaOutput, groups=groups)
 @
 \end{center}
@@ -85,16 +85,16 @@ the serum stimulated.
 \subsection{Get loadings from PCA}
 We would like to have the first 1365 probe ids (2,5 \%)  from 2. principal
 component in the negative (serum stimulated) direction.
-<<probeIds>>=
+<<probeIds,eval=FALSE>>=
 loadsNegPC2 <- getRankedProbeIds( pcaOutput, pc=2, decreasing=FALSE )[1:1365]
 @
 \subsection{Create Gene Ontology tree from loadings}
 Note: In this step you will be asked to install the necessary data packages.
-<<GOtree>>=
+<<GOtree,eval=FALSE>>=
 GOtreeOutput <- GOtree( input = loadsNegPC2)
 @
 \begin{center}
-<<GOtreePlot,label=fig3,fig=TRUE,eps=FALSE>>=
+<<GOtreePlot,label=fig3,fig=TRUE,eps=FALSE,eval=FALSE>>=
 plot(GOtreeOutput,legendPosition = "bottomright")
 @
 \end{center}
@@ -103,19 +103,19 @@ Output to PDF file is advised. This can be done by coping output to a PDF file:
 dev.copy2pdf(file="GOtree.pdf")
 @
 Function 'GOtree()' also outputs a list of GO terms order by p-value.
-<<printGOtree>>=
+<<printGOtree,eval=FALSE>>=
 head(GOtreeOutput$sigGOs,n=10)
 @
 \subsection{Get list of possible transcription factors}
 To get possible transcription factors, use function primo() function.
-<<printPrimo>>=
+<<printPrimo,eval=FALSE>>=
 TFtable <- primo( loadsNegPC2 )
 head(TFtable$overRepresented)
 @
 The output shows you which possible transcription factors (genes) the supplied
 probes have in common.\newline
 \subsection{Get a list of probe ids for a specific transcription factor}
-<<printPrimeHits>>=
+<<printPrimeHits,eval=FALSE>>=
 probeIds <- primoHits( loadsNegPC2 , id = 9343 )	
 head(probeIds)
 @

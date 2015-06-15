@@ -103,7 +103,7 @@ plot.pca <- function(x, groups, PCs=c(1, 2), printNames=TRUE, symbolColors=TRUE,
         main <- NULL		
     }
     
-    require("ellipse")
+    ## require("ellipse")
     
     ## Find plot area 
     ellipseData <- ellipse(var(p$scores[, PCs]),

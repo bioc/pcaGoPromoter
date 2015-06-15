@@ -17,8 +17,6 @@ primoData <- function(promoters, matrices, cleanUpPromoters=TRUE) {
 
 primoData.getPromoters <- function(file) {
     
-    require(Biostrings)
-    
     promoters <- readFASTA(file, strip.descs=T)
     
     noPromoters <- length(promoters)
