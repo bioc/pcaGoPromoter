@@ -27,8 +27,9 @@ options(width=80,digits=6)
 
 R version 2.14.0 or higher\newline
 <<bioC,eval=FALSE>>=
-source("http://bioconductor.org/biocLite.R")
-biocLite("pcaGoPromoter",dependencies=TRUE)
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("pcaGoPromoter",dependencies=TRUE)
 @
 Rgraphviz from Bioconductor is needed to draw Gene Ontology tree.
 Note: Graphviz needs to be installed on the computer for Rgraphviz to work.
