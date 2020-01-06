@@ -1,5 +1,5 @@
 Package: pcaGoPromoter
-Version: 1.31.0
+Version: 1.31.1
 Date: 2012-03-16
 Title: pcaGoPromoter is used to analyze DNA micro array data
 Author: Morten Hansen, Jorgen Olsen
@@ -19,3 +19,4 @@ Suggests: Rgraphviz, GO.db, hgu133plus2.db, mouse4302.db, rat2302.db,
   serumStimulation, parallel
 LazyLoad: yes
 License: GPL (>= 2)
+PackageStatus: Deprecated
